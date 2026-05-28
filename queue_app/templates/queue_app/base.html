@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Queue.io{% endblock %}</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;700;800&family=Epilogue:wght@700;800&display=swap');
+
+        :root {
+            /* Palette Warna Neo-Brutalism */
+            --bg-color: #F6F0E5; 
+            --card-bg-white: #FFFFFF;
+            --accent-purple: #C499F3; 
+            --accent-orange: #F4A261; 
+            --accent-blue: #A2B2EE;
+            --accent-green: #A3D9B1; /* Sidebar color from image */
+            --accent-pink: #FFB3DE;
+            --text-color: #121614; 
+            
+            --neo-border: 3.5px solid var(--text-color);
+            --neo-shadow: 7px 7px 0px var(--text-color);
+            --neo-shadow-sm: 4px 4px 0px var(--text-color);
+            
+            --font-brodish: 'Epilogue', sans-serif;
+            --font-body: 'Lexend', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            /* Outer background matching the image */
+            background: linear-gradient(135deg, #7CD5EE 0%, #7CD5EE 40%, #F5AB99 40%, #F5AB99 75%, #F4A261 75%, #F4A261 100%);
+        }
+
+        /* App Wrapper */
+        .app-wrapper {
+            display: flex;
+            width: 95vw;
+            max-width: 1400px;
+            height: 90vh;
+            background-color: var(--bg-color);
+            border: var(--neo-border);
+            box-shadow: 15px 15px 0px var(--text-color);
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--accent-green);
+            border-right: var(--neo-border);
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            flex-shrink: 0;
+        }
+
+        .sidebar-logo {
+            font-family: var(--font-brodish);
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            letter-spacing: -1px;
+        }
+
+        .sidebar-logo span {
+            background: #fff;
+            padding: 4px 8px;
+            border: 2px solid var(--text-color);
+            font-size: 1rem;
+        }
+
+        .neo-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .nav-link {
+            font-family: var(--font-brodish);
+            text-decoration: none;
+            color: var(--text-color);
+            padding: 12px 15px;
+            border: 2.5px solid transparent;
+            font-weight: 700;
+            transition: all 0.1s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: var(--text-color);
+            color: #fff;
+            border: 2.5px solid var(--text-color);
+            box-shadow: 4px 4px 0px var(--card-bg-white);
+            transform: translate(-2px, -2px);
+        }
+
+        /* Main Content */
+        .main-content {
+            flex-grow: 1;
+            padding: 30px 40px;
+            overflow-y: auto;
+            background-color: var(--bg-color);
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .search-container {
+            display: flex;
+            background: var(--card-bg-white);
+            border: var(--neo-border);
+            padding: 8px 15px;
+            width: 400px;
+            align-items: center;
+            box-shadow: var(--neo-shadow-sm);
+        }
+        
+        .search-container input {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-family: var(--font-body);
+            font-weight: 700;
+            width: 100%;
+            padding: 0;
+            box-shadow: none;
+            transform: none;
+        }
+
+        .top-header .profile-area {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .profile-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--card-bg-white);
+            border: var(--neo-border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: var(--font-brodish);
+            font-weight: 800;
+            box-shadow: 3px 3px 0px var(--text-color);
+        }
+
+        .profile-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--accent-orange);
+            border: var(--neo-border);
+            box-shadow: 3px 3px 0px var(--text-color);
+        }
+
+        /* Global UI Elements */
+        .neo-box {
+            background: var(--card-bg-white);
+            border: var(--neo-border);
+            padding: 25px;
+            box-shadow: var(--neo-shadow);
+            margin-bottom: 30px;
+        }
+
+        h2.section-title {
+            margin-top: 0;
+            margin-bottom: 25px;
+            font-family: var(--font-brodish);
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        /* Form Controls */
+        .form-group { margin-bottom: 22px; }
+        label { display: block; margin-bottom: 10px; font-family: var(--font-brodish); font-weight: 700; font-size: 1rem; }
+        input[type="text"], textarea {
+            width: 100%; padding: 14px; font-family: var(--font-body); font-size: 1rem;
+            font-weight: 700; border: var(--neo-border); background-color: #fff;
+            box-sizing: border-box; transition: all 0.1s ease;
+        }
+        input[type="text"]:focus, textarea:focus {
+            outline: none; transform: translate(-2px, -2px); box-shadow: var(--neo-shadow-sm);
+        }
+
+        /* Tombol */
+        button, .btn-action {
+            font-family: var(--font-brodish); font-weight: 800;
+            background-color: var(--accent-orange); color: var(--text-color);
+            border: var(--neo-border); padding: 12px 24px; cursor: pointer;
+            box-shadow: var(--neo-shadow-sm); transition: transform 0.1s, box-shadow 0.1s;
+            text-decoration: none; display: inline-block; text-align: center;
+            font-size: 1rem;
+        }
+        button:hover, .btn-action:hover {
+            transform: translate(-2px, -2px); box-shadow: 5px 5px 0px var(--text-color);
+        }
+        button:active, .btn-action:active {
+            transform: translate(2px, 2px); box-shadow: 2px 2px 0px var(--text-color);
+        }
+        
+        .badge {
+            font-family: var(--font-body); font-weight: 800; padding: 4px 10px;
+            border: 2px solid var(--text-color); font-size: 0.75rem; text-transform: uppercase;
+        }
+        
+        .layout-grid {
+            display: grid;
+            gap: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <span>&lt;/&gt;</span> Fixio
+            </div>
+            
+            <nav class="neo-nav">
+                <a href="{% url 'daftar_antrian' %}" class="nav-link {% block nav_daftar %}{% endblock %}">
+                    ⌂ Home
+                </a>
+                <a href="{% url 'dashboard_statistik' %}" class="nav-link {% block nav_dashboard %}{% endblock %}">
+                    ⊞ Dashboard
+                </a>
+                <a href="{% url 'riwayat_antrian' %}" class="nav-link {% block nav_riwayat %}{% endblock %}">
+                    ≡ Riwayat
+                </a>
+            </nav>
+
+            <div class="neo-nav" style="flex-grow: 0; border-top: var(--neo-border); padding-top: 20px; margin-top: 20px;">
+                <a href="#" class="nav-link" style="font-size: 0.8rem; padding: 8px 15px;">⚙ Preferences</a>
+                <a href="#" class="nav-link" style="font-size: 0.8rem; padding: 8px 15px;">⎋ Log out</a>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <div class="top-header">
+                <div class="search-container">
+                    <span style="margin-right: 10px; font-weight: bold;">⚲</span>
+                    <input type="text" placeholder="Find queue, clients, etc...">
+                </div>
+                <div class="profile-area">
+                    <div class="profile-avatar"></div>
+                </div>
+            </div>
+
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+
+</body>
+</html>

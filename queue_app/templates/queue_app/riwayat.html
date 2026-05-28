@@ -1,0 +1,57 @@
+{% extends 'queue_app/base.html' %}
+
+{% block title %}Riwayat Antrian Total — Fixio{% endblock %}
+{% block nav_riwayat %}active{% endblock %}
+
+{% block content %}
+<h2 class="section-title">Riwayat Antrian & Kontrol</h2>
+
+<div class="neo-box" style="background-color: #fff; padding: 20px;">
+    
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; min-width: 800px;">
+            <thead>
+                <tr>
+                    <th style="border: 2.5px solid var(--text-color); padding: 14px; text-align: left; font-family: var(--font-brodish); background: var(--accent-orange);">Pelanggan / HP</th>
+                    <th style="border: 2.5px solid var(--text-color); padding: 14px; text-align: left; font-family: var(--font-brodish); background: var(--accent-orange);">Keluhan</th>
+                    <th style="border: 2.5px solid var(--text-color); padding: 14px; text-align: left; font-family: var(--font-brodish); background: var(--accent-orange);">Status</th>
+                    <th style="border: 2.5px solid var(--text-color); padding: 14px; text-align: left; font-family: var(--font-brodish); background: var(--accent-orange);">Ubah Status Teknis</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for antrian in riwayat %}
+                <tr style="background: {% cycle '#fff' '#FAF9F6' %};">
+                    <td style="border: 2.5px solid var(--text-color); padding: 14px;">
+                        <div style="font-weight: 700; font-family: var(--font-brodish); font-size: 1.1rem;">{{ antrian.nama_pelanggan }}</div>
+                        <div style="font-size: 0.85rem; opacity: 0.7;">{{ antrian.tipe_hp }}</div>
+                    </td>
+                    <td style="border: 2.5px solid var(--text-color); padding: 14px; font-size: 0.9rem; font-style: italic;">{{ antrian.keluhan }}</td>
+                    <td style="border: 2.5px solid var(--text-color); padding: 14px;">
+                        {% if antrian.status == "Menunggu" %}
+                            <span class="badge" style="background-color: var(--accent-pink);">{{ antrian.status }}</span>
+                        {% elif antrian.status == "Dikerjakan" %}
+                            <span class="badge" style="background-color: var(--accent-blue);">{{ antrian.status }}</span>
+                        {% else %}
+                            <span class="badge" style="background-color: var(--accent-green);">{{ antrian.status }}</span>
+                        {% endif %}
+                    </td>
+                    <td style="border: 2.5px solid var(--text-color); padding: 14px;">
+                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <a href="{% url 'edit_antrian' antrian.pk %}" class="btn-action" style="background: #fff; padding: 6px 10px; font-size: 0.75rem;">Edit Data</a>
+                            <a href="{% url 'ubah_status' antrian.pk 'Menunggu' %}" class="btn-action" style="background: var(--accent-pink); padding: 6px 10px; font-size: 0.75rem;">Set Menunggu</a>
+                            <a href="{% url 'ubah_status' antrian.pk 'Dikerjakan' %}" class="btn-action" style="background: var(--accent-blue); padding: 6px 10px; font-size: 0.75rem;">Set Proses</a>
+                            <a href="{% url 'ubah_status' antrian.pk 'Selesai' %}" class="btn-action" style="background: var(--accent-green); padding: 6px 10px; font-size: 0.75rem;">Set Selesai</a>
+                            <a href="{% url 'hapus_antrian' antrian.pk %}" onclick="return confirm('Hapus permanen antrian ini?')" class="btn-action" style="background: #FF6B6B; color: white; padding: 6px 10px; font-size: 0.75rem;">Hapus Data</a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" style="border: 2.5px solid var(--text-color); padding: 20px; text-align: center; font-style: italic;">Data riwayat masih kosong.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

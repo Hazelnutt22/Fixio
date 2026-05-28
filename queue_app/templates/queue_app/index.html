@@ -1,0 +1,59 @@
+{% extends 'queue_app/base.html' %}
+
+{% block title %}Pendaftaran Antrian — Fixio{% endblock %}
+{% block nav_daftar %}active{% endblock %}
+
+{% block content %}
+<h2 class="section-title">Pendaftaran Service</h2>
+
+<div class="layout-grid" style="grid-template-columns: 1fr 1.2fr;">
+    
+    <div class="neo-box" style="background-color: var(--accent-orange);">
+        <h3 style="font-family: var(--font-brodish); font-size: 1.5rem; margin-top: 0; margin-bottom: 20px; border-bottom: var(--neo-border); padding-bottom: 10px;">Formulir</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Nama Pelanggan</label>
+                <input type="text" name="nama" required placeholder="Masukkan nama lengkap">
+            </div>
+            
+            <div class="form-group">
+                <label>Tipe / Model HP</label>
+                <input type="text" name="tipe" required placeholder="Contoh: iPhone 13 Pro">
+            </div>
+            
+            <div class="form-group">
+                <label>Detail Kerusakan</label>
+                <textarea name="keluhan" rows="4" required placeholder="Jelaskan keluhan yang dialami..."></textarea>
+            </div>
+            
+            <button type="submit" style="background-color: var(--text-color); color: #fff; width: 100%;">TAMBAH ANTRIAN ↵</button>
+        </form>
+    </div>
+
+    <div>
+        <h3 style="font-family: var(--font-brodish); font-size: 1.5rem; margin-top: 0; margin-bottom: 20px;">Antrian Saat Ini</h3>
+        
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+            {% for antrian in semua_antrian %}
+            <div class="neo-box" style="margin-bottom: 0; padding: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <span style="font-family: var(--font-brodish); font-size: 1.2rem; font-weight: 700; background: #fff; padding: 2px 8px;">{{ antrian.nama_pelanggan }} — {{ antrian.tipe_hp }}</span>
+                        <span class="badge" style="background: var(--accent-purple);">{{ antrian.status }}</span>
+                    </div>
+                    <a href="{% url 'hapus_antrian' antrian.pk %}" onclick="return confirm('Yakin ingin menghapus antrian ini?')" style="text-decoration: none; color: #fff; background: #FF6B6B; border: 2px solid #000; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.85rem; box-shadow: 2px 2px 0px #000;">×</a>
+                </div>
+                <p style="margin: 0; font-family: var(--font-body); color: #333; font-size: 0.95rem;">{{ antrian.keluhan }}</p>
+                <span style="font-size: 0.75rem; font-weight: 700; opacity: 0.6; display: block; margin-top: 15px;">MASUK: {{ antrian.tanggal_masuk|date:"d M Y, H:i" }}</span>
+            </div>
+            {% empty %}
+            <div class="neo-box" style="text-align: center; font-weight: 700; color: #666;">
+                Belum ada antrian. Sistem siap menerima pendaftaran.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}

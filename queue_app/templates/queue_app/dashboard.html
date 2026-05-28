@@ -1,0 +1,67 @@
+{% extends 'queue_app/base.html' %}
+
+{% block title %}Dashboard Statistik — Fixio{% endblock %}
+{% block nav_dashboard %}active{% endblock %}
+
+{% block content %}
+<h2 class="section-title">Dashboard Overview</h2>
+
+<div class="layout-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 40px;">
+    <div class="neo-box" style="background-color: #fff; padding: 20px; text-align: center;">
+        <h3 style="margin: 0; font-family: var(--font-brodish); font-size: 1rem; text-transform: uppercase;">Total Antrian</h3>
+        <p style="font-family: var(--font-brodish); font-size: 3rem; font-weight: 800; margin: 10px 0 0 0;">{{ total }}</p>
+    </div>
+    <div class="neo-box" style="background-color: var(--accent-pink); padding: 20px; text-align: center;">
+        <h3 style="margin: 0; font-family: var(--font-brodish); font-size: 1rem; text-transform: uppercase;">Menunggu</h3>
+        <p style="font-family: var(--font-brodish); font-size: 3rem; font-weight: 800; margin: 10px 0 0 0;">{{ menunggu }}</p>
+    </div>
+    <div class="neo-box" style="background-color: var(--accent-blue); padding: 20px; text-align: center;">
+        <h3 style="margin: 0; font-family: var(--font-brodish); font-size: 1rem; text-transform: uppercase;">Dikerjakan</h3>
+        <p style="font-family: var(--font-brodish); font-size: 3rem; font-weight: 800; margin: 10px 0 0 0;">{{ dikerjakan }}</p>
+    </div>
+    <div class="neo-box" style="background-color: var(--accent-orange); padding: 20px; text-align: center;">
+        <h3 style="margin: 0; font-family: var(--font-brodish); font-size: 1rem; text-transform: uppercase;">Selesai</h3>
+        <p style="font-family: var(--font-brodish); font-size: 3rem; font-weight: 800; margin: 10px 0 0 0;">{{ selesai }}</p>
+    </div>
+</div>
+
+<div class="neo-box" style="background-color: #fff;">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: var(--neo-border); padding-bottom: 15px; margin-bottom: 20px;">
+        <h3 style="font-family: var(--font-brodish); font-size: 1.5rem; margin: 0;">Aktivitas Antrian Terbaru</h3>
+        <a href="{% url 'riwayat_antrian' %}" style="font-family: var(--font-body); font-weight: 700; color: var(--text-color); border: 2px solid var(--text-color); padding: 5px 15px; text-decoration: none; font-size: 0.85rem;">View all</a>
+    </div>
+    
+    <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="border: 2.5px solid var(--text-color); padding: 14px; text-align: left; font-family: var(--font-brodish); background: var(--accent-blue);">Pelanggan</th>
+                <th style="border: 2.5px solid var(--text-color); padding: 14px; text-align: left; font-family: var(--font-brodish); background: var(--accent-blue);">Device</th>
+                <th style="border: 2.5px solid var(--text-color); padding: 14px; text-align: left; font-family: var(--font-brodish); background: var(--accent-blue);">Status</th>
+                <th style="border: 2.5px solid var(--text-color); padding: 14px; text-align: left; font-family: var(--font-brodish); background: var(--accent-blue);">Tanggal Masuk</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for antrian in antrian_terbaru %}
+            <tr style="background: {% cycle '#fff' '#FAF9F6' %};">
+                <td style="border: 2.5px solid var(--text-color); padding: 14px; font-weight: 700;">{{ antrian.nama_pelanggan }}</td>
+                <td style="border: 2.5px solid var(--text-color); padding: 14px;">{{ antrian.tipe_hp }}</td>
+                <td style="border: 2.5px solid var(--text-color); padding: 14px;">
+                    {% if antrian.status == "Menunggu" %}
+                        <span class="badge" style="background-color: var(--accent-pink);">{{ antrian.status }}</span>
+                    {% elif antrian.status == "Dikerjakan" %}
+                        <span class="badge" style="background-color: var(--accent-blue);">{{ antrian.status }}</span>
+                    {% else %}
+                        <span class="badge" style="background-color: var(--accent-green);">{{ antrian.status }}</span>
+                    {% endif %}
+                </td>
+                <td style="border: 2.5px solid var(--text-color); padding: 14px; font-size: 0.85rem;">{{ antrian.tanggal_masuk|date:"d M Y, H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="border: 2.5px solid var(--text-color); padding: 20px; text-align: center; font-style: italic;">Belum ada aktivitas data service.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
