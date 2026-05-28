@@ -243,20 +243,29 @@
             </div>
             
             <nav class="neo-nav">
-                <a href="{% url 'daftar_antrian' %}" class="nav-link {% block nav_daftar %}{% endblock %}">
-                    ⌂ Home
-                </a>
+                {% if user.is_authenticated %}
+                <!-- ADMIN: Dashboard & Riwayat -->
                 <a href="{% url 'dashboard_statistik' %}" class="nav-link {% block nav_dashboard %}{% endblock %}">
                     ⊞ Dashboard
                 </a>
                 <a href="{% url 'riwayat_antrian' %}" class="nav-link {% block nav_riwayat %}{% endblock %}">
                     ≡ Riwayat
                 </a>
+                {% else %}
+                <!-- USER: Home saja -->
+                <a href="{% url 'daftar_antrian' %}" class="nav-link {% block nav_daftar %}{% endblock %}">
+                    ⌂ Home
+                </a>
+                {% endif %}
             </nav>
 
             <div class="neo-nav" style="flex-grow: 0; border-top: var(--neo-border); padding-top: 20px; margin-top: 20px;">
-                <a href="#" class="nav-link" style="font-size: 0.8rem; padding: 8px 15px;">⚙ Preferences</a>
-                <a href="#" class="nav-link" style="font-size: 0.8rem; padding: 8px 15px;">⎋ Log out</a>
+                {% if user.is_authenticated %}
+                <span style="font-family: var(--font-brodish); font-size: 0.75rem; padding: 8px 15px; opacity: 0.7; font-weight: 700;">👤 {{ user.username }}</span>
+                <a href="{% url 'admin_logout' %}" class="nav-link" style="font-size: 0.8rem; padding: 8px 15px;">⎋ Log out</a>
+                {% else %}
+                <a href="{% url 'admin_login' %}" class="nav-link" style="font-size: 0.8rem; padding: 8px 15px;">🔑 Login Admin</a>
+                {% endif %}
             </div>
         </aside>
 

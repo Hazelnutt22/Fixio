@@ -42,7 +42,6 @@
                         <span style="font-family: var(--font-brodish); font-size: 1.2rem; font-weight: 700; background: #fff; padding: 2px 8px;">{{ antrian.nama_pelanggan }} — {{ antrian.tipe_hp }}</span>
                         <span class="badge" style="background: var(--accent-purple);">{{ antrian.status }}</span>
                     </div>
-                    <a href="{% url 'hapus_antrian' antrian.pk %}" onclick="return confirm('Yakin ingin menghapus antrian ini?')" style="text-decoration: none; color: #fff; background: #FF6B6B; border: 2px solid #000; padding: 2px 8px; border-radius: 4px; font-weight: 800; font-size: 0.85rem; box-shadow: 2px 2px 0px #000;">×</a>
                 </div>
                 <p style="margin: 0; font-family: var(--font-body); color: #333; font-size: 0.95rem;">{{ antrian.keluhan }}</p>
                 <span style="font-size: 0.75rem; font-weight: 700; opacity: 0.6; display: block; margin-top: 15px;">MASUK: {{ antrian.tanggal_masuk|date:"d M Y, H:i" }}</span>

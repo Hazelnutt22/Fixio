@@ -8,4 +8,6 @@ urlpatterns = [
     path('status/<int:pk>/<str:status_baru>/', views.ubah_status, name='ubah_status'),
     path('edit/<int:pk>/', views.edit_antrian, name='edit_antrian'),
     path('hapus/<int:pk>/', views.hapus_antrian, name='hapus_antrian'),
+    path('login/', views.admin_login, name='admin_login'),
+    path('logout/', views.admin_logout, name='admin_logout'),
 ]
